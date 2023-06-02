@@ -1,25 +1,12 @@
 const PORT = 3000;
 const express = require("express");
-const bodyParser = require("body-parser");
-const posts = require("./model/posts")
+const path = require("path");
+const apiRoute = require("./routes/api")
 
 const app = express();
 
-app.get("/all", (req, res)=>{
-
-  res.json(JSON.stringify(posts.getAll()))
-
-})
-
-app.post("/new", bodyParser.json(), (req, res)=>{
-  let title = req.body.title
-  let description = req.body.description
-
-  posts.newPost(title,description)
-
-  res.send("Post successfully added")
-
-})
+app.use("/api",apiRoute)
+app.use("/", express.static(path.join(__dirname, "public")))
 
 app.listen(PORT, ()=>{
   console.log("server running on port", PORT);
